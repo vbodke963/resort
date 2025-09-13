@@ -996,7 +996,7 @@
                         <div class="room-card-content">
                             <h3>Ocean View Suite</h3>
                             <p>Wake up to breathtaking ocean panoramas. This spacious suite features a king-size bed, private balcony, and a luxurious marble bathroom.</p>
-                            <div class="room-card-price">$650 <span>/ night</span></div>
+                            <div class="room-card-price">₹53,950 <span>/ night</span></div>
                             <a href="#booking" class="btn">Book Now</a>
                         </div>
                     </div>
@@ -1008,7 +1008,7 @@
                         <div class="room-card-content">
                             <h3>Beachfront Villa</h3>
                             <p>Experience ultimate luxury in our private villa with direct beach access, infinity pool, and dedicated butler service.</p>
-                            <div class="room-card-price">$1,200 <span>/ night</span></div>
+                            <div class="room-card-price">₹99,600 <span>/ night</span></div>
                             <a href="#booking" class="btn">Book Now</a>
                         </div>
                     </div>
@@ -1020,7 +1020,7 @@
                         <div class="room-card-content">
                             <h3>Garden Suite</h3>
                             <p>Immerse yourself in tropical tranquility with our garden suite featuring a private terrace and outdoor shower.</p>
-                            <div class="room-card-price">$480 <span>/ night</span></div>
+                            <div class="room-card-price">₹39,840 <span>/ night</span></div>
                             <a href="#booking" class="btn">Book Now</a>
                         </div>
                     </div>
@@ -1032,7 +1032,7 @@
                         <div class="room-card-content">
                             <h3>Private Garden Villa</h3>
                             <p>Enjoy secluded luxury with your own private garden and plunge pool. Perfect for couples seeking intimacy and tranquility.</p>
-                            <div class="room-card-price">$890 <span>/ night</span></div>
+                            <div class="room-card-price">₹73,870 <span>/ night</span></div>
                             <a href="#booking" class="btn">Book Now</a>
                         </div>
                     </div>
@@ -1043,7 +1043,7 @@
                         <div class="room-card-content">
                             <h3>Grand Penthouse Suite</h3>
                             <p>Our most opulent offering, featuring multiple rooms, a private terrace, and personalized concierge service for an ultimate experience.</p>
-                            <div class="room-card-price">$1200 <span>/ night</span></div>
+                            <div class="room-card-price">₹99,600 <span>/ night</span></div>
                             <a href="#booking" class="btn">Book Now</a>
                         </div>
                     </div>
@@ -1162,9 +1162,9 @@
                                 <label for="roomType">Preferred Room Type</label>
                                 <select id="roomType" name="roomType" required>
                                     <option value="">Select a Room</option>
-                                    <option value="ocean-view-suite">Ocean View Suite ($650/night)</option>
-                                    <option value="private-garden-villa">Private Garden Villa ($890/night)</option>
-                                    <option value="grand-penthouse-suite">Grand Penthouse Suite ($1200/night)</option>
+                                    <option value="ocean-view-suite">Ocean View Suite (₹53,950/night)</option>
+                                    <option value="private-garden-villa">Private Garden Villa (₹73,870/night)</option>
+                                    <option value="grand-penthouse-suite">Grand Penthouse Suite (₹99,600/night)</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn">Check Availability</button>
@@ -1356,6 +1356,10 @@
                 '2024-01-15', '2024-01-16' // Example for next year
             ];
 
+            // Prices are stored in USD; USD->INR rate is configurable below.
+            // Update USD_TO_INR to change conversion across the page.
+            const USD_TO_INR = 83; // 1 USD = 83 INR (assumed)
+
             const roomPrices = {
                 'ocean-view-suite': 650,
                 'private-garden-villa': 890,
@@ -1403,13 +1407,16 @@
                 }
 
                 if (isAvailable && roomType && roomPrices[roomType]) {
-                    const totalPrice = roomPrices[roomType] * totalNights;
+
+                    const totalPriceUSD = roomPrices[roomType] * totalNights;
+                    const totalPriceINR = totalPriceUSD * USD_TO_INR;
 
                     displayCheckIn.textContent = checkInDate.toLocaleDateString();
                     displayCheckOut.textContent = checkOutDate.toLocaleDateString();
                     displayGuests.textContent = guests;
                     displayRoomType.textContent = document.getElementById('roomType').options[document.getElementById('roomType').selectedIndex].text.split('(')[0].trim();
-                    displayTotalPrice.textContent = `$${totalPrice.toLocaleString()} (${totalNights} nights)`;
+                    // Show total price in Indian Rupees. Format using en-IN for commas.
+                    displayTotalPrice.textContent = `₹${totalPriceINR.toLocaleString('en-IN')} (${totalNights} nights)`;
 
                     confirmReservationForm.style.display = 'block';
                 } else {
